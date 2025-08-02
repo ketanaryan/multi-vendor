@@ -4,19 +4,19 @@ import { NextRequest, NextResponse } from "next/server";
 import dbConnect from "@/lib/mongodb";
 import Shop from "@/models/Shop";
 
-export async function PUT(request: NextRequest, context: { params: { id: string } }) {
+export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
     const session = await getServerSession(authOptions);
     if (!session || session.user.role !== 'admin') {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { id } = context.params;
+    const { id } = params;
     const { status } = await request.json();
 
     if (!['approved', 'blocked'].includes(status)) {
         return NextResponse.json({ error: 'Invalid status' }, { status: 400 });
     }
-
+    
     await dbConnect();
 
     try {

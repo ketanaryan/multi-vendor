@@ -8,7 +8,7 @@ export async function GET() {
     try {
         const approvedShops = await Shop.find({ status: 'approved' });
         return NextResponse.json(approvedShops);
-    } catch (error) {
+    } catch (_error) {
         return NextResponse.json({ error: 'Server error' }, { status: 500 });
     }
 }
