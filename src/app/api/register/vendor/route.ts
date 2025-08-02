@@ -46,9 +46,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ message: 'Vendor registered successfully. Awaiting admin approval.' }, { status: 201 });
 
   } catch (error: any) {
-    await session.abortTransaction();
-    return NextResponse.json({ error: error.message || 'Failed to register vendor' }, { status: 500 });
-  } finally {
+  await session.abortTransaction();
+  console.error("Vendor Registration Error:", error); // Also a good idea to log the error
+  return NextResponse.json({ error: error.message || 'Failed to register vendor' }, { status: 500 });
+}finally {
     session.endSession();
   }
 }

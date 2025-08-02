@@ -1,9 +1,4 @@
-import mongoose from 'mongoose';
-
-// This prevents errors in development due to hot-reloading
-declare global {
-  var mongoose: any;
-}
+import mongoose, { Mongoose } from 'mongoose';
 
 const MONGODB_URI = process.env.MONGODB_URI!;
 
@@ -11,6 +6,14 @@ if (!MONGODB_URI) {
   throw new Error(
     'Please define the MONGODB_URI environment variable inside .env.local'
   );
+}
+
+// Define a more specific type for the global variable
+declare global {
+  var mongoose: {
+    promise: Promise<Mongoose> | null;
+    conn: Mongoose | null;
+  };
 }
 
 let cached = global.mongoose;
@@ -28,7 +31,6 @@ async function dbConnect() {
     const opts = {
       bufferCommands: false,
     };
-
     cached.promise = mongoose.connect(MONGODB_URI, opts).then((mongoose) => {
       return mongoose;
     });

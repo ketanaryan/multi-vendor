@@ -104,7 +104,7 @@ export default function VendorDashboard() {
                                         <span className="font-semibold">₹{product.price}</span>
                                     </div>
                                 )) : (
-                                    <p className="text-gray-500">You haven't added any products yet.</p>
+                                    <p className="text-gray-500">You haven&apos;t added any products yet.</p>
                                 )}
                             </div>
                         </div>
