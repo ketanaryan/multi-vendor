@@ -4,9 +4,6 @@
   /* Updated to a light gray background and a softer black for text */
   --background: #f9fafb; /* This is Tailwind's gray-50 */
   --foreground: #1f2937; /* This is Tailwind's gray-800 */
-}
-
-@theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);

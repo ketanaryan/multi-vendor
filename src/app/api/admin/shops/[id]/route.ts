@@ -4,14 +4,15 @@ import { NextRequest, NextResponse } from "next/server";
 import dbConnect from "@/lib/mongodb";
 import Shop from "@/models/Shop";
 
-// The change is in this line below
-export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
+// Using the more explicit 'context' parameter for the route
+export async function PUT(request: NextRequest, context: { params: { id: string } }) {
     const session = await getServerSession(authOptions);
     if (!session || session.user.role !== 'admin') {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { id } = params;
+    // Get the 'id' from the context object
+    const { id } = context.params;
     const { status } = await request.json();
 
     if (!['approved', 'blocked'].includes(status)) {
