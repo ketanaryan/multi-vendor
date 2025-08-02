@@ -4,6 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 import dbConnect from "@/lib/mongodb";
 import Shop from "@/models/Shop";
 
+// The change is in this line below
 export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
     const session = await getServerSession(authOptions);
     if (!session || session.user.role !== 'admin') {
@@ -25,8 +26,8 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
             return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
         }
         return NextResponse.json(updatedShop);
-    } catch (error) {
-        console.error("Admin Update Shop Error:", error);
+    } catch (_error) {
+        console.error("Admin Update Shop Error:", _error);
         return NextResponse.json({ error: 'Server error' }, { status: 500 });
     }
 }
