@@ -45,11 +45,17 @@ export async function POST(request: Request) {
     await session.commitTransaction();
     return NextResponse.json({ message: 'Vendor registered successfully. Awaiting admin approval.' }, { status: 201 });
 
-  } catch (error: any) {
-  await session.abortTransaction();
-  console.error("Vendor Registration Error:", error); // Also a good idea to log the error
-  return NextResponse.json({ error: error.message || 'Failed to register vendor' }, { status: 500 });
-}finally {
+  } catch (error) { // The 'error' is of type 'unknown' here
+    await session.abortTransaction();
+    console.error("Vendor Registration Error:", error);
+
+    // This is a type guard to safely handle the error
+    if (error instanceof Error) {
+        return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    return NextResponse.json({ error: 'An unexpected error occurred' }, { status: 500 });
+  } finally {
     session.endSession();
   }
 }
